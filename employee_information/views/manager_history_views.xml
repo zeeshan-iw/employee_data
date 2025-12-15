@@ -1,0 +1,53 @@
+<odoo>
+	<record id="hr_version_list_inherit" model="ir.ui.view">
+		<field name="name">hr.version.list.inherit</field>
+		<field name="model">hr.version</field>
+		<field name="inherit_id" ref="hr.hr_version_list_view"/>
+		<field name="arch" type="xml">
+			<field name="employee_id" position="after">
+				<field name="parent_id" optional="show"/>
+				<field name="job_description" optional="show"/>
+			</field>
+		</field>
+	</record>
+	
+	<!-- List View -->
+	<record id="view_hr_manager_history_tree" model="ir.ui.view">
+		<field name="name">hr.manager.history.tree</field>
+		<field name="model">hr.manager.history</field>
+		<field name="arch" type="xml">
+			<list string="Manager History" create="false">
+				<field name="contract_reference" string="Contract/Period"/>
+				<field name="manager_id"/>
+				<field name="date_from"/>
+				<field name="date_to"/>
+				<field name="modification_date"/>
+			</list>
+		</field>
+	</record>
+	
+	<!-- Form View -->
+	<record id="view_hr_manager_history_form" model="ir.ui.view">
+		<field name="name">hr.manager.history.form</field>
+		<field name="model">hr.manager.history</field>
+		<field name="arch" type="xml">
+			<form string="Manager History" create="false" edit="false">
+				<sheet>
+					<group>
+						<group>
+							<field name="employee_id" readonly="1"/>
+							<field name="contract_reference" readonly="1"/>
+							<field name="manager_id" readonly="1"/>
+						</group>
+						<group>
+							<field name="date_from" readonly="1"/>
+							<field name="date_to" readonly="1"/>
+							<field name="modification_date" readonly="1"/>
+						</group>
+					</group>
+				</sheet>
+			</form>
+		</field>
+	</record>
+
+</odoo>

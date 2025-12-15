@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Document Template Line Form View (for popup editing) -->
+    <record id="view_document_template_line_form" model="ir.ui.view">
+        <field name="name">hr.document.template.line.form</field>
+        <field name="model">hr.document.template.line</field>
+        <field name="arch" type="xml">
+            <form string="Document">
+                <group>
+                    <field name="name"/>
+                    <field name="document_file" filename="file_name"/>
+                    <field name="file_name" invisible="1"/>
+                    <field name="folder_id" placeholder="e.g., HR Documents"/>
+                    <field name="tags" placeholder="e.g., Contract, Onboarding"/>
+                    <!--                    <field name="type"/>-->
+
+                </group>
+            </form>
+        </field>
+    </record>
+
+    <!-- Document Template Form View -->
+    <record id="view_document_template_form" model="ir.ui.view">
+        <field name="name">hr.document.template.form</field>
+        <field name="model">hr.document.template</field>
+        <field name="arch" type="xml">
+            <form string="Policy Groups">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Documents">
+                            <field name="document_ids">
+                                <list string="Documents">
+                                    <field name="name"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Document Template List View -->
+    <record id="view_document_template_list" model="ir.ui.view">
+        <field name="name">hr.document.template.list</field>
+        <field name="model">hr.document.template</field>
+        <field name="arch" type="xml">
+            <list string="Policy Groups">
+                <field name="name"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Document Template Action -->
+    <record id="action_document_template" model="ir.actions.act_window">
+        <field name="name">Policy Groups</field>
+        <field name="res_model">hr.document.template</field>
+        <field name="view_mode">kanban,list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first policy group
+            </p>
+            <p>
+                Define policy group that will be automatically uploaded when an employee category is selected.
+            </p>
+        </field>
+    </record>
+
+
+    <record id="view_document_template_form_inherit_smartbutton"
+            model="ir.ui.view">
+        <field name="name">hr.document.template.form.inherit.smartbutton</field>
+        <field name="model">hr.document.template</field>
+        <field name="inherit_id" ref="employee_document_automation.view_document_template_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//form/sheet" position="before">
+                <header>
+                    <button name="action_view_employees"
+                            type="object"
+                            class="oe_stat_button"
+                            icon="fa-users">
+                        <div class="o_stat_info">
+                            <span class="o_stat_value">
+                                <field name="employee_count"/>
+                            </span>
+                            <span class="o_stat_text">Employees</span>
+                        </div>
+                    </button>
+                </header>
+            </xpath>
+
+        </field>
+    </record>
+
+
+    <record id="view_document_template_kanban" model="ir.ui.view">
+        <field name="name">hr.document.template.kanban</field>
+        <field name="model">hr.document.template</field>
+        <field name="arch" type="xml">
+
+            <!-- EXACT SAME KANBAN STYLE AS DEPARTMENTS -->
+            <kanban class="o_hr_department_kanban o_kanban_small_column"
+                    can_open="1">
+
+                <!-- Fields required by the view -->
+                <field name="name"/>
+                <field name="employee_count"/>
+
+                <templates>
+
+                    <!-- CARD TEMPLATE -->
+                    <t t-name="card">
+
+                        <!-- Title (top-left, bold, big) -->
+                        <a type="open">
+                            <field name="name"
+                                   class="fw-bold fs-4 d-block ms-2 mt-2"/>
+                        </a>
+
+                        <!-- Row containing the big Employees button -->
+                        <div class="row g-0 mt-3 mb-2 ms-2"
+                             t-if="!selection_mode">
+
+                            <!-- Left-side primary button (same style as departments) -->
+                            <div class="col-6">
+                                <button class="btn btn-primary"
+                                        type="object"
+                                        name="action_view_employees">
+                                    <field name="employee_count"/>
+                                    Employees
+                                </button>
+                            </div>
+
+                            <!-- Placeholder for extensions -->
+                            <div name="kanban_primary_right" class="col-6">
+                            </div>
+
+                        </div>
+
+                        <!-- Bottom placeholder (Odoo-compatible) -->
+                        <div name="kanban_card_lower_content"
+                             class="mt-auto"
+                             t-if="!selection_mode">
+                        </div>
+
+                    </t>
+
+                </templates>
+            </kanban>
+
+        </field>
+    </record>
+
+    <!-- Menu Item -->
+    <menuitem id="menu_document_template"
+              name="Policy Groups"
+              parent="hr.menu_hr_root"
+              action="action_document_template"
+              sequence="100"/>
+
+</odoo>

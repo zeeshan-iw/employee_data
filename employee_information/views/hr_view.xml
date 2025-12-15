@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+	<record id="view_employee_form" model="ir.ui.view">
+		<field name="model">hr.employee</field>
+		<field name="inherit_id" ref="hr.view_employee_form"/>
+		<field name="arch" type="xml">
+			
+			<xpath expr="//field[@name='name']" position="attributes">
+				<attribute name="readonly">1</attribute>
+				<attribute name="no_label">1</attribute>
+				<attribute name="required">0</attribute>
+			</xpath>
+			<xpath expr="//h1//field[@name='name']/.." position="after">
+				<group>
+					<group>
+						<field name="firstname"/>
+					</group>
+					<group>
+						<field name="lastname"/>
+					</group>
+				</group>
+				
+				<group>
+					<group>
+						<field name="department_id"/>
+						<field name="document_category"/>
+						<!--                        from module employee_document_automation-->
+					</group>
+					<group>
+						<field name="parent_id"/>
+					</group>
+				</group>
+				
+				<group>
+					<group>
+						<field name="employment_status" required="not employment_status"/>
+					</group>
+					<group>
+						<!--						<field name="employee_type"/>-->
+					</group>
+				</group>
+				
+				<group>
+					<field name="job_id"/>
+					<field name="job_title"/>
+					<field name="job_description"/>
+				</group>
+			</xpath>
+			
+			
+			<xpath expr="//field[@name='emergency_phone']" position="after">
+				<field name="relationship"/>
+			</xpath>
+			
+			<xpath expr="//field[@name='country_id']" position="attributes">
+				<attribute name="invisible">1</attribute>
+			</xpath>
+			
+			<xpath expr="//field[@name='identification_id']" position="attributes">
+				<attribute name="invisible">1</attribute>
+			</xpath>
+			
+			<xpath expr="//field[@name='passport_id']" position="attributes">
+				<attribute name="invisible">1</attribute>
+			</xpath>
+			
+			<xpath expr="//field[@name='legal_name']" position="after">
+				<field name="preferred_name"/>
+			</xpath>
+			
+			<xpath expr="//field[@name='bank_account_ids']" position="after">
+				
+				<field name="forklift_license_number" groups="employee_information.group_staffing_employee"/>
+				<!--				<field name="driver_license_no"/>-->
+				<!--				<field name="driver_license_expiry"/>-->
+				<!--				<field name="driver_license_attachment"/>-->
+			</xpath>
+			
+			<xpath expr="//field[@name='contract_type_id']" position="after">
+				<field name="position_code" placeholder="Position Code"/>
+			</xpath>
+			<xpath expr="//page[@name='work_information']//field[@name='parent_id']" position="after">
+				<field name="joining_date"/>
+				<field name="rehire_eligibility"/>
+				<field name="employee_typee" invisible="1"/>
+			</xpath>
+			
+			
+			<xpath expr="//field[@name='ssnid']" position="replace">
+				
+				<field name="ssnid" groups="base.group_system,employee_information.group_hr_managers"/>
+				<!--                <field name="dl_valid_from"-->
+				<!--                       modifiers="{'invisible': [('document_category', '!=', 'staffing_employee')]}"/>-->
+				
+				<!--                <field name="dl_valid_to" invisible="document_category != 'Staffing Employee'"/>-->
+				
+				
+				<field name="ssnid_masked"
+				       groups="!base.group_system,!employee_information.group_hr_managers"
+				       string="SSN"/>
+			</xpath>
+			
+			
+			<xpath expr="//page[@name='hr_settings']" position="after">
+				<page name="history" string="Employee History">
+					<group>
+						<group>
+							<button type="object" name="action_manager_history" class="oe_highlight"
+							        string="Manager History"/>
+						</group>
+					</group>
+				</page>
+			</xpath>
+			
+			<xpath expr="//notebook" position="inside">
+				<page string="Immigration &amp; Visa" name="visa_work" invisible="employee_typee != 'H1B'">
+					<group col="2">
+						<group string="WORK AUTHORIZATION">
+							<field name="visa_type"/>
+							<field name="visa_expire" invisible="not visa_type"/>
+							<field name="visa_no"/>
+							<field name="work_permit_expiration_date" invisible="not permit_no"/>
+							<field name="permit_no"/>
+							<field name="work_permit_expiration_date" invisible="not permit_no"/>
+							<field name="work_permit_name" invisible="1"/>
+							<field name="has_work_permit" widget="work_permit_upload" filename="work_permit_name"
+							       string="Document"/>
+						</group>
+						
+						<group string="Visa &amp; Work Permit">
+							<field name="petition_type"/>
+							<field name="petition_number"/>
+							<field name="uscis_receipt_number"/>
+							<field name="petition_filing_date"/>
+							<field name="case_status"/>
+							<field name="premium_processing"/>
+							<field name="rfe_received"/>
+							<field name="rfe_response_date"/>
+						</group>
+					</group>
+					independent_contractor_us
+					
+					
+					<group col="2">
+						<group string="Validity Dates Section">
+							<field name="validity_start_date"/>
+							<field name="validity_end_date"/>
+							<field name="i94_expiry_date"/>
+							<field name="passport_expiry_date"/>
+							<field name="visa_stamp_expiry_date"/>
+						</group>
+						
+						<group string="LCA (Labor Condition Application) SECTION">
+							<field name="lca_number"/>
+							<field name="lca_filing_date"/>
+							<field name="lca_posting_start_date"/>
+							<field name="lca_posting_end_date"/>
+							<field name="worksites"/>
+							<field name="soc_code"/>
+							<field name="wage_level"/>
+							<field name="prevailing_wage"/>
+							<field name="actual_wage"/>
+						</group>
+					</group>
+					
+					
+					<group col="2">
+						<group string="WORKSITE &amp; JOB INFORMATION SECTION">
+							<field name="worksite_address"/>
+							<field name="lca_job_title"/>
+							<field name="job_location"/>
+							<field name="standard_work_hours"/>
+							<field name="job_duties_changed"/>
+							<field name="new_lca_needed"/>
+						</group>
+						
+						<group string="ATTORNEY / LAW FIRM INFORMATION SECTION">
+							<field name="law_firm_name"/>
+							<field name="attorney_assigned"/>
+							<field name="attorney_email"/>
+							<field name="attorney_phone"/>
+							<field name="attorney_note"/>
+						</group>
+					</group>
+					
+					
+					<group string="DOCUMENT UPLOAD SECTION">
+						<field name="immigration_documents" string="">
+							<list editable="bottom">
+								<field name="document_type"/>
+								<field name="file" filename="file_name"/>
+								<field name="file_name"/>
+								<field name="version"/>
+								<button name="action_preview_document"
+								        type="object"
+								        string="Preview"
+								        class="btn-link"
+								        icon="fa-eye"/>
+								<field name="uploaded_by" readonly="1" optional="show"/>
+								<field name="upload_datetime" readonly="1" optional="show"/>
+							</list>
+						</field>
+					</group>
+				</page>
+			</xpath>
+			
+			<xpath expr="//page[@name='visa_work']" position="after">
+				<page name="internal_notes" string="Internal Notes">
+					<group>
+						<field name="hr_notes"/>
+						<field name="manager_notes"/>
+					</group>
+				</page>
+			</xpath>
+			<xpath expr="//page[@name='internal_notes']" position="after">
+				<page name="work_authorization" string="Work Authorization" invisible="employee_typee != 'W2_employee'">
+					<group>
+						<field name="visa_type"/>
+						<field name="visa_expire" invisible="not visa_type"/>
+						<field name="visa_no"/>
+						<field name="work_permit_expiration_date" invisible="not permit_no"/>
+						<field name="permit_no"/>
+						<field name="work_permit_expiration_date" invisible="not permit_no"/>
+						<field name="work_permit_name" invisible="1"/>
+						<field name="has_work_permit" widget="work_permit_upload" filename="work_permit_name"
+						       string="Document"/>
+					</group>
+				</page>
+			</xpath>
+		</field>
+	</record>
+	
+	
+	<record id="view_employee_tree_inherit" model="ir.ui.view">
+		<field name="name">hr.employee.tree.inherit.immigration</field>
+		<field name="model">hr.employee</field>
+		<field name="inherit_id" ref="hr.view_employee_tree"/>
+		<field name="arch" type="xml">
+			<xpath expr="//field[@name='country_id']" position="after">
+				<field name="i94_expiry_date" optional="hide"/>
+				<field name="document_category" optional="hide"/>
+				<field name="visa_stamp_expiry_date" optional="hide"/>
+				<field name="passport_expiry_date" optional="hide"/>
+				<field name="lca_posting_end_date" optional="hide"/>
+				<field name="rfe_response_date" optional="hide"/>
+				<field name="case_status" optional="hide"/>
+				<field name="worksites" optional="hide"/>
+				<field name="attorney_assigned" optional="hide"/>
+				<field name="visa_type" optional="hide"/>
+			</xpath>
+		</field>
+	</record>
+	
+	
+	<record id="view_employee_form_inherit_hide_original_visa" model="ir.ui.view">
+		<field name="name">hr.employee.inherit.hide.original.visa</field>
+		<field name="model">hr.employee</field>
+		<field name="inherit_id" ref="hr.view_employee_form"/>
+		<field name="arch" type="xml">
+			<xpath expr="//label[@for='visa_no']/parent::group" position="attributes">
+				<attribute name="invisible">1</attribute>
+			</xpath>
+		</field>
+	</record>
+
+</odoo>

@@ -1,0 +1,20 @@
+{
+    "name": "Employee Information",
+    "version": "19.0.1.0.1",
+    "author": "Zeeshan - IndexWorld",
+    "maintainers": ["Savoir-faire Linux", "luisg123v"],
+    "website": "https://indexworld.net",
+    "license": "AGPL-3",
+    "category": "Human Resources",
+    "depends": ["hr","base","documents",'employee_document_automation'],
+    "data": [
+        "security/ir.model.access.csv",
+        "views/base_config_view.xml",
+        "views/manager_history_views.xml",
+        "views/hr_view.xml",
+        "views/send_alerts.xml",
+        "security/res_groups.xml",
+    ],
+    "application": False,
+    "installable": True,
+}

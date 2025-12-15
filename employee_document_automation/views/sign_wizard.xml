@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="sign_send_request_employee_view" model="ir.ui.view">
+        <field name="name">sign.send.request.employee.view</field>
+        <field name="model">sign.send.request</field>
+        <field name="inherit_id" ref="sign.sign_send_request_view_form"/>
+        <field name="arch" type="xml">
+
+            <!-- Replace the entire Contacts block -->
+            <xpath expr="//div[@class='o_row'][label[@for='signer_id']]" position="replace">
+                <div class="o_row" invisible="signers_count != 0 or not template_id">
+                    <label for="employee_ids" string="Employees" class="fw-bold"/>
+                    <field name="employee_ids"
+                           widget="many2many_tags"
+                           class="w-90"
+                           required="signers_count == 0"
+                           options="{'no_create_edit': True, 'no_create': True}"
+                           placeholder="Select employees..."/>
+                </div>
+            </xpath>
+
+        </field>
+    </record>
+</odoo>
